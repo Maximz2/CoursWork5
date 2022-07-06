@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from equipment import Equipment, Weapon, Armor
+from equipment import Weapon, Armor
 from classes import UnitClass
 from random import randint
 from typing import Optional
@@ -18,10 +18,9 @@ class BaseUnit(ABC):
         self.unit_class = unit_class
         self.hp = unit_class.max_health
         self.stamina = unit_class.max_stamina
-        self.weapon = ...
-        self.armor = ...
+        self.weapon = None
+        self.armor = None
         self._is_skill_used = False
-
 
     @abstractmethod
     def hit(self, target: BaseUnit) -> str:
@@ -32,11 +31,11 @@ class BaseUnit(ABC):
 
     @property
     def health_points(self):
-        return round(self.hp,1)
+        return round(self.hp, 1)
 
     @property
     def stamina_points(self):
-        return  round(self.stamina, 1)
+        return round(self.stamina, 1)
 
     def equip_weapon(self, weapon: Weapon):
         self.weapon = weapon
@@ -61,12 +60,12 @@ class BaseUnit(ABC):
             return round(damage, 1)
         return 0
 
-
     def use_skill(self, target: BaseUnit) -> str:
         if self._is_skill_used:
             return 'Навык уже использован'
         self._is_skill_used = True
-        return self.unit_class.skill.use(self,target)
+        return self.unit_class.skill.use(self, target)
+
 
 class PlayerUnit(BaseUnit):
 
@@ -87,10 +86,11 @@ class PlayerUnit(BaseUnit):
             f"но {target.armor.name} cоперника его останавливает."
         )
 
+
 class EnemyUnit(BaseUnit):
 
     def hit(self, target: BaseUnit) -> str:
-        if not self._is_skill_used and self.stamina >= self.unit_class.skill.stamina and randint(0,100) < 10:
+        if not self._is_skill_used and self.stamina >= self.unit_class.skill.stamina and randint(0, 100) < 10:
             return self.use_skill(target)
 
         if self.stamina * self.unit_class.stamina < self.weapon.stamina_per_hit:
