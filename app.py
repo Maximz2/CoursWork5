@@ -1,15 +1,17 @@
 from flask import render_template, Flask, request, redirect, url_for
 
-import equipment
+
 from base import Arena
 from classes import unit_classes
+from equipment import Equipment
 from unit import PlayerUnit
 
 app = Flask(__name__)
-
+app.config['TESTING'] = True
 heroes = {}
 
 arena = Arena()
+equipment = Equipment()
 
 
 @app.route("/")

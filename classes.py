@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from skills import HardShot, FuryPunch
+from skills import HardShot, FuryPunch, Skill
 
 
 @dataclass
@@ -11,7 +11,8 @@ class UnitClass:
     attack: float
     stamina: float
     armor: float
-    skill: float
+    skill: Skill
+
 
 WarriorClass = UnitClass(
     name='Воин',
